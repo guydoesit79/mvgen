@@ -69,7 +69,7 @@ $('.fa-trash-o').click(function() {
   $('#video-category').removeClass('disabled');
 })
 
-addEventListener('error', function(event) { writeLine('ERROR: ' + event.message) })
+window.addEventListener('error', function(event) { writeLine('ERROR: ' + event.message) })
 
 
 // Main functions
@@ -136,7 +136,7 @@ function makeVid() {
     listDir('videos/' + category + '/', function(deltas) {
       deltaDir = closest(delta, deltas.map(x => parseFloat(x.slice(0, -1))));
       listDir('videos/' + category + '/' + deltaDir, function(v) {
-        videoSources = v.map(x => '/mvgen/videos/' + category + '/' + deltaDir + '/' + x) // from root b/c/ ajax switches to http
+        videoSources = v.map(x => 'videos/' + category + '/' + deltaDir + '/' + x) 
         videoSources = getRandom(videoSources, N);
         console.log(videoSources)
 
@@ -209,6 +209,7 @@ function sourceOpen(e) {
 }
 
 function downloadData(url, cb) {
+  var url = window.location.href + url;
   console.log("Downloading " + url);  
   var xhr = new XMLHttpRequest;
   xhr.open('get', url);
