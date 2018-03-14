@@ -138,7 +138,6 @@ function makeVid() {
       listDir('videos/' + category + '/' + deltaDir, function(v) {
         videoSources = v.map(x => 'videos/' + category + '/' + deltaDir + '/' + x) 
         videoSources = getRandom(videoSources, N);
-        console.log(videoSources)
 
         loadFn = downloadData;
 
@@ -327,6 +326,7 @@ function pause(video) {
 }
 
 function listDir(path, cb) {
+  console.log('Reading ' + path)
   var fileNames = new Array();
   $.ajax({
     url: path,
