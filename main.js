@@ -135,7 +135,7 @@ function makeVid() {
 
     listDir('videos/' + category + '/', function(deltas) {
       deltaDir = closest(delta, deltas.map(x => parseFloat(x.slice(0, -1))));
-      listDir('videos/' + category + '/' + deltaDir, function(v) {
+      listDir('videos/' + category + '/' + deltaDir + '/', function(v) {
         videoSources = v.map(x => 'videos/' + category + '/' + deltaDir + '/' + x) 
         videoSources = getRandom(videoSources, N);
 
@@ -208,7 +208,6 @@ function sourceOpen(e) {
 }
 
 function downloadData(url, cb) {
-  var url = window.location.href + url;
   console.log("Downloading " + url);  
   var xhr = new XMLHttpRequest;
   xhr.open('get', url);
