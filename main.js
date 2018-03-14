@@ -75,20 +75,21 @@ addEventListener('error', function(event) { writeLine('ERROR: ' + event.message)
 // Main functions
 
 $('#submit').on('click', function() {
+  // Reset frontend
+  $('#video-box').hide();
+  $('#progress-box').show();
+  audio.pause();  
+
   if (newAudio) { 
     // Need to run this part when audio is new even if user changes bpm manually
     // to get audio duration
+
     writeLine('Processing audio.')
     var file = $('#upload')[0].files[0];
     audio.src = URL.createObjectURL(file);
-    
-    // Reset frontend
-    $('#video-box').hide();
-    // $('.masked-element').show();
-    $('#progress-box').show();
+        
     offset = 0;
     $('#offset').val(offset);
-    $('#progress-rect').height("100%");
   
     function get_bpm(callback) {
       var reader = new FileReader();
@@ -106,21 +107,15 @@ $('#submit').on('click', function() {
   
     get_bpm(function(bpm, audioDuration){
       $('#select-bpm').val(Math.round(bpm));      
-      makeVid();
       newAudio = false;  
+      makeVid();
     });      
   } else {
     makeVid();
   }
 });
 
-function makeVid() {
-
-  // Handle frontend
-  $('#video-box').hide();
-  // $('.masked-element').show();  
-  $('#progress-box').show();
-  audio.pause();  
+function makeVid() {  
   bpm = parseFloat($('#select-bpm').val()); // Do use rounded bpm  
 
   writeLine('Audio BPM: ' + roundDec(bpm, 3));
@@ -135,7 +130,6 @@ function makeVid() {
   N = Math.ceil((audioDuration / delta));  
 
   if ($('#video-upload')[0].files.length == 0) {
-  // if (1) {
 
     var category = $('#videos').find(":selected").val();
 
@@ -152,14 +146,6 @@ function makeVid() {
         mediaSource.addEventListener('sourceopen', sourceOpen);
       })
     })
-
-
-    // vidN = 9;
-    // videoSources = Array.apply(null, {length: vidN + 1}).map(Number.call, Number)
-    // videoSources = getRandom(videoSources, N);
-    // videoSources = videoSources.map(x => 'video/128_2/g_' + x + '.mp4')
-      
-    // loadFn = downloadData;
 
   } else {
 

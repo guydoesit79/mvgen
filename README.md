@@ -28,7 +28,7 @@ The interface of MVGen consists of the following fields,
 
 ## Capturing
 
-Capturing is what is sounds like: it records the video as it plays. Only parts that are played will get recorded, which means that you have to sit through the entire video to capture it completely.
+Capturing is what it sounds like: it records the video as it plays. Only parts that are played will get recorded, which means that you have to sit through the entire video to capture it completely.
 
 ## Limitations
 
