@@ -45,7 +45,7 @@ $('#capture-button').click(captureVideo);
 
 $('#upload').on('change', function() { newAudio = true; });
 
-listDir('/videos/', function(dirs) { 
+listDir('videos/', function(dirs) { 
   $.each(dirs, function(index, value) {
     $('#videos').append($('<option>', {
       value: value.slice(0, -1),
