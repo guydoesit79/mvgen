@@ -32,7 +32,7 @@ The interface of MVGen consists of the following fields,
 
 ## Capturing
 
-Capturing is what it sounds like: it records the video as it plays. Only parts that are played will get recorded, which means that you have to sit through the entire video to capture it completely.
+The video is generated dynamically, and as such it is not readily available for download. You can try attempting to capture it. Capturing is what it sounds like: it records the video as it plays. Only parts that are played will get recorded, which means that you have to sit through the entire video to capture it completely. When the video stops playing or when capturing is stopped, a save-as dialog with the resulting file will be spawned.
 
 ## Limitations
 
