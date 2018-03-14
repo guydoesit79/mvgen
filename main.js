@@ -136,8 +136,9 @@ function makeVid() {
     listDir('videos/' + category + '/', function(deltas) {
       deltaDir = closest(delta, deltas.map(x => parseFloat(x.slice(0, -1))));
       listDir('videos/' + category + '/' + deltaDir, function(v) {
-        videoSources = v.map(x => 'videos/' + category + '/' + deltaDir + '/' + x)
+        videoSources = v.map(x => '/mvgen/videos/' + category + '/' + deltaDir + '/' + x) // from root b/c/ ajax switches to http
         videoSources = getRandom(videoSources, N);
+        console.log(videoSources)
 
         loadFn = downloadData;
 
