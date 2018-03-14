@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="static/ico/favicon.ico">
+
+    <title>MVGen</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="static/css/mvgen.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+      <h5 class="my-0 mr-md-auto font-weight-normal"><a class="text-dark" href="#">MVGen</a></h5>
+    </div>
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+      <h1 class="display-4">MVGen</h1>
+      <h3>Music Video Generator</h3>
+      <p class="lead">Create a music video from your favorite audio and video sources in seconds!</p>
+    </div>
+
+    <div class="container">
+      
+      <div class="row justify-content-around">
+        <form>
+          <div class="form-row  align-items-center">
+            <div class="col-md-2">
+              <label>Upload audio</label>
+              <input type="file" class="form-control" id="upload" accept="audio/*" />
+            </div>
+            <div class="col-md-2">
+              <label class="control-label">Upload video
+                <span data-toggle="tooltip" title="Clear this field">
+                    <i class="fa fa-trash-o fa-fw" aria-hidden="true" style="cursor: pointer;"></i>
+                </span>
+              </label>
+              <input type="file" class="form-control" id="video-upload" accept="video/*" multiple />         
+            </div>
+            <div class="col-md-2" id="video-category">
+              <label class="control-label">Video category</label>
+              <select class="form-control" id="videos">
+                <option disabled selected value="0">Loading content...</option>
+              </select>              
+            </div>
+            <div class="col-md">
+              <label class="control-label">Audio BPM
+                    <span data-toggle="tooltip" title="Audio bpm will be detected from your file, however you may correct it here if necessary.">
+                      <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                    </span>
+                </label>
+                <input class="form-control form-control" id="select-bpm" type="text">
+            </div>
+            <div class="col-md">
+              <label class="control-label">Multiplier
+                <span data-toggle="tooltip" title="Select number of scenes per beat (lower number is faster pace). Recommended values are 1, 2 and 4.">
+                    <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                </span>
+              </label>
+              <input class="form-control form-control" id="select-mult" type="text" value="2">
+            </div>
+            <div class="col-md">
+              <label class="control-label">Offset
+                <span data-toggle="tooltip" title="Change audio offset if it's out of sync (increase the offset if audio comes too early, and vice versa). You can also change it dynamically as the video plays.">
+                    <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                </span>
+              </label>
+              <input class="form-control form-control" id="offset" type="number" step="0.05" value="0">
+            </div>
+            <div class="col-md mb-1 align-self-end">
+              <button type="button" class="btn btn-success btn btn-block form-control" id="submit">Update</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+
+      <div class="row justify-content-center">
+        
+        <div id="video-box" class="wrapper" style="display: none">
+
+          <div class="row top-buffer"></div>
+          <div class="row top-buffer"></div>
+          <div class="row top-buffer"></div>
+
+          <div class="row">
+            <video controls id="myvideo" class="video-wrap" muted></video>
+          </div>
+          
+          <div class="row top-buffer"></div>
+
+          <div class="row justify-content-center">
+            <button id="capture-button" type="button" class="btn btn-primary" data-toggle="tooltip" title="Since the videos are generated dynamically, they are not readily available for download. You can choose to capture them in-browser which is done live, i.e. you need to play and keep the entire video in focus in order to download it completely. At the moment, only Chrome supports this fully.">Capture video</button>
+          </div>
+
+
+          <audio controls id="myaudio" hidden></audio>
+        </div>    
+      </div>
+
+      <div class="row top-buffer"></div>
+        
+      <div class="row" id="progress-box">      
+        <div class="shell-wrap">
+          <ul class="shell-body">
+            <li class="typewriter">Initialized.</li>
+          </ul>
+        </div>      
+      </div>
+
+      <footer class="pt-4 my-md-5 pt-md-5 border-top"></footer>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="static/js/bundle.js"></script>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
+
+    <script>
+      $(document).ready(function() {
+          $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,98 @@
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.container {
+  max-width: 960px;
+}
+
+.pricing-header {
+  max-width: 700px;
+}
+
+.card-deck .card {
+  min-width: 220px;
+}
+
+.border-top { border-top: 1px solid #e5e5e5; }
+.border-bottom { border-bottom: 1px solid #e5e5e5; }
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+
+.top-buffer { margin-top:20px; }
+    
+.video-wrap {
+  width: 600;
+  box-shadow: 0 0 30px rgba(0,0,0,0.4);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+ 
+/*https://guides.codechewing.com/mac-terminal-shell-css-html*/
+.shell-wrap {
+  width: 540px;
+  margin: 10px auto 0 auto;
+  box-shadow: 0 0 30px rgba(0,0,0,0.4);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.shell-body {
+  height: 150px;
+  max-height: 150px;
+  overflow: auto;
+  margin: 0;
+  padding: 5px;
+  list-style: none;
+  background: #1B1918;
+  color: #CEC6C3;
+  font: 0.8em 'Andale Mono', Consolas, 'Courier New';
+  line-height: 1.6em;
+
+  -webkit-border-bottom-right-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.shell-body li:before {
+  content: '>';
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.shell-body li {
+  word-wrap: break-word;
+  position: relative;
+  padding: 0 0 0 15px;
+}
+
+/*https://css-tricks.com/snippets/css/typewriter-effect/*/
+.typewriter {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  white-space: nowrap; /* Keeps the content on a single line */
+  animation:
+    typing 0.5s steps(40, end)
+}
+
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.4;
+}
