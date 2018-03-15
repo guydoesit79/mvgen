@@ -12,15 +12,15 @@ MVGen (Music Video Generator) dynamically generates music videos by putting toge
 
 - Clone the repo (`git clone https://github.com/oleg131/mvgen`).
 - Deploy an HTTP server (any server will do, e.g. `python -m SimpleHTTPServer`).
-- Go to the `index.html` location in your browser (preferrably Chrome).
+- Go to the `index.html` location in your browser.
 
 ## Usage
 
 The interface of MVGen consists of the following fields,
 
-- **Audio**: Audio file for the music video. Audio with a strong beat is preferrable, e.g. EDM or trance.
+- **Audio**: Audio file for the music video
 
-- **Videos**: Video chunks for the music video. This is the most tricky part. Each chunk represents a scene that will need to be alternated. The files need to be fragmented MP4 encoded with `H.264`/`AAC`. If you have a full video that you want to split up, you can use [ffmpeg](https://www.ffmpeg.org/) with `ffmpeg -i <input> -c:v libx264 -c:a aac -f segment -segment_time <time> -segment_format_options movflags=empty_moov+default_base_moof+frag_keyframe -reset_timestamps 1 <output_%d.mp4>`, where `<input>` is the path to the full video, `<time>` is the segment duration (in seconds) and `<output_%d.mp4>` is the output files (`%d` in the name is a counter and ensures that files have different names). Because of the way ffmpeg works, some resulting files may be shorter than the specified duration, so you may want to remove them. Also, if the files are much longer than they should be, the overlap may become glitchy. Remember, ideal scene duration is `(number of scenes per beat) * 60 / bpm`.
+- **Videos**: Video chunks for the music video. This is the most tricky part. Each chunk represents a scene that will need to be alternated. The files need to be fragmented MP4 encoded with `H.264/AAC`. If you have a full video that you want to split up, you can use [ffmpeg](https://www.ffmpeg.org/) with `ffmpeg -i <input> -c:v libx264 -c:a aac -f segment -segment_time <time> -segment_format_options movflags=empty_moov+default_base_moof+frag_keyframe -reset_timestamps 1 <output_%d.mp4>`, where `<input>` is the path to the full video, `<time>` is the segment duration (in seconds) and `<output_%d.mp4>` is the output files (`%d` in the name is a counter and ensures that files have different names). Because of the way ffmpeg works, some resulting files may be shorter than the specified duration, so you may want to remove them. Also, if the files are much longer than they should be, the overlap may become glitchy. Remember, ideal scene duration is `(number of scenes per beat) * 60 / bpm`.
 
 - **Video category**: You may store the video chunks in a directory for easier access, grouped by categories. The path is `videos/<category>/<duration>/**.mp4`, where `<category>` is the category name and `<duration`> is the target duration of the chunks (typically the shortest chunk). If you're running the server locally, it's no different from just uploading the files using the file input above, however it is much slower, because the speed is limited by how fast your server can serve them. This field is ignored if video files are selected in the previous step.
 
@@ -36,7 +36,7 @@ The video is generated dynamically, and as such it is not readily available for 
 
 ## Limitations
 
-- The capturing functionality is not entirely robust and seems to only work in Chrome. The resulting file is a `webm` encoded with `H.264`/`Opus`. It doesn't always play correctly, so you may want to re-encode it into something more robust. Also, the audio offset will not reflect in the recording, yet.
+- The capturing functionality is not entirely robust and seems to only work in Chrome. The resulting file is a `webm` encoded with `H.264/Opus`. It doesn't always play correctly, so you may want to re-encode it into something more robust. Also, the audio offset will not reflect in the recording, yet.
 
 - The size of the video buffer is limited, therefore only SD videos can be used for the most part. This can theoretically be solved by smart buffering and deleting unneeded parts.
 

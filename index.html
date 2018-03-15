@@ -32,7 +32,7 @@
     </div>
 
     <div class="container">
-      
+
       <div class="row justify-content-around">
         <form>
           <div class="form-row  align-items-center">
@@ -41,18 +41,14 @@
               <input type="file" class="form-control" id="upload" accept="audio/*" />
             </div>
             <div class="col-md-2">
-              <label class="control-label">Upload video
-                <span data-toggle="tooltip" title="Clear this field">
-                    <i class="fa fa-trash-o fa-fw" aria-hidden="true" style="cursor: pointer;"></i>
-                </span>
-              </label>
-              <input type="file" class="form-control" id="video-upload" accept="video/*" multiple />         
+              <label class="control-label">Upload video</label>
+              <input type="file" class="form-control" id="video-upload" accept="video/*" multiple />
             </div>
             <div class="col-md-2" id="video-category">
               <label class="control-label">Video category</label>
               <select class="form-control" id="videos">
-                <option disabled selected value="0">Loading content...</option>
-              </select>              
+                <option selected value="">(use uploaded files)</option>
+              </select>
             </div>
             <div class="col-md">
               <label class="control-label">Audio BPM
@@ -84,10 +80,10 @@
           </div>
         </form>
       </div>
-      
+
 
       <div class="row justify-content-center">
-        
+
         <div id="video-box" class="wrapper" style="display: none">
 
           <div class="row top-buffer"></div>
@@ -97,7 +93,7 @@
           <div class="row">
             <video controls id="myvideo" class="video-wrap" muted></video>
           </div>
-          
+
           <div class="row top-buffer"></div>
 
           <div class="row justify-content-center">
@@ -106,17 +102,17 @@
 
 
           <audio controls id="myaudio" hidden></audio>
-        </div>    
+        </div>
       </div>
 
       <div class="row top-buffer"></div>
-        
-      <div class="row" id="progress-box">      
+
+      <div class="row" id="progress-box">
         <div class="shell-wrap">
           <ul class="shell-body">
             <li class="typewriter">Initialized.</li>
           </ul>
-        </div>      
+        </div>
       </div>
 
       <footer class="pt-4 my-md-5 pt-md-5 border-top"></footer>
@@ -133,7 +129,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
     <script>
       $(document).ready(function() {

@@ -43,9 +43,39 @@ $('.shell-body').on('contentChange', function() { this.scrollTop = this.scrollHe
 
 $('#capture-button').click(captureVideo);
 
-$('#upload').on('change', function() { newAudio = true; });
+$('#upload').on('change', function() {
+  newAudio = true;
 
-listDir('videos/', function(dirs) { 
+  writeLine('Processing audio.')
+  var file = $('#upload')[0].files[0];
+  audio.src = URL.createObjectURL(file);
+
+  offset = 0;
+  $('#offset').val(offset);
+
+  function get_bpm(callback) {
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      context.decodeAudioData(ev.target.result, function(buffer) {
+        bpm = detect(buffer);
+        audioDuration = buffer.duration;
+        console.log('Audio duration: ' + audioDuration);
+        console.log('BPM: ' + bpm);
+        callback(bpm, audioDuration);
+      });
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  get_bpm(function(bpm, audioDuration) {
+    $('#select-bpm').val(Math.round(bpm));
+    newAudio = false;
+    // makeVid();
+  });
+
+});
+
+listDir('videos/', function(dirs) {
   $.each(dirs, function(index, value) {
     $('#videos').append($('<option>', {
       value: value.slice(0, -1),
@@ -54,72 +84,23 @@ listDir('videos/', function(dirs) {
   });
 });
 
-$('#videos option[value="0"]').remove();
-
-$('#video-upload').change(function (){
-  if (this.files.length > 0) { 
-    $('#video-category').addClass('disabled');
-  } else {
-    $('#video-category').removeClass('disabled');
-  }
-})
-
-$('.fa-trash-o').click(function() {
-  $('#video-upload').val([]); 
-  $('#video-category').removeClass('disabled');
-})
-
 window.addEventListener('error', function(event) { writeLine('ERROR: ' + event.message) })
 
 
 // Main functions
 
 $('#submit').on('click', function() {
-  // Reset frontend
-  $('#video-box').hide();
-  $('#progress-box').show();
-  audio.pause();  
-
-  if (newAudio) { 
-    // Need to run this part when audio is new even if user changes bpm manually
-    // to get audio duration
-
-    writeLine('Processing audio.')
-    var file = $('#upload')[0].files[0];
-    audio.src = URL.createObjectURL(file);
-        
-    offset = 0;
-    $('#offset').val(offset);
-  
-    function get_bpm(callback) {
-      var reader = new FileReader();
-      reader.onload = function(ev) {
-        context.decodeAudioData(ev.target.result, function(buffer) {          
-          bpm = detect(buffer);
-          audioDuration = buffer.duration;
-          console.log('Audio duration: ' + audioDuration);
-          console.log('BPM: ' + bpm);
-          callback(bpm, audioDuration);
-        });
-      };
-      reader.readAsArrayBuffer(file);
-    }
-  
-    get_bpm(function(bpm, audioDuration){
-      $('#select-bpm').val(Math.round(bpm));      
-      newAudio = false;  
-      makeVid();
-    });      
-  } else {
+  if ($('#select-bpm').val() != '') {
+    hideVideoBox();
     makeVid();
   }
 });
 
-function makeVid() {  
-  bpm = parseFloat($('#select-bpm').val()); // Do use rounded bpm  
+function makeVid() {
+  bpm = parseFloat($('#select-bpm').val()); // Do use rounded bpm
 
   writeLine('Audio BPM: ' + roundDec(bpm, 3));
-  
+
   duration = 0;
   var mult = parseFloat($('#select-mult').val())
   delta = mult * 60 / bpm;
@@ -127,16 +108,16 @@ function makeVid() {
 
   writeLine('Loading video files...')
 
-  N = Math.ceil((audioDuration / delta));  
+  N = Math.ceil((audioDuration / delta));
 
-  if ($('#video-upload')[0].files.length == 0) {
+  var category = $('#videos').find(":selected").val();
 
-    var category = $('#videos').find(":selected").val();
+  if (category != '') {
 
     listDir('videos/' + category + '/', function(deltas) {
       deltaDir = closest(delta, deltas.map(x => parseFloat(x.slice(0, -1))));
       listDir('videos/' + category + '/' + deltaDir + '/', function(v) {
-        videoSources = v.map(x => 'videos/' + category + '/' + deltaDir + '/' + x) 
+        videoSources = v.map(x => 'videos/' + category + '/' + deltaDir + '/' + x)
         videoSources = getRandom(videoSources, N);
 
         loadFn = downloadData;
@@ -151,14 +132,14 @@ function makeVid() {
 
     videoSources = Array.from($('#video-upload')[0].files);
     videoSources = getRandom(videoSources, N);
-    
-    loadFn = loadData;    
+
+    loadFn = loadData;
 
     mediaSource = new MediaSource;
     video.src = URL.createObjectURL(mediaSource);
     mediaSource.addEventListener('sourceopen', sourceOpen);
-  
-  } 
+
+  }
 }
 
 
@@ -175,28 +156,27 @@ function sourceOpen(e) {
 
     if (videoSources.length == 0) {
       console.log('Calling EOS');
-    
+
       mediaSource.endOfStream();
-      video.currentTime = 0;     
-      $('#video-box').show();
-      $('.masked-element').hide();
-      $('#progress-box').hide();
+
+      showVideoBox();
+      video.currentTime = 0;
       play(video);
 
       writeLine('Complete.');
-    
-      return;       
+
+      return;
     }
 
     loadFn(videoSources.pop(), function(arrayBuffer) {
       pc = 100 * (1 - (videoSources.length / N));
       updateLine('Loading video files... ' + roundDec(pc, 3) + '%')
-      
+
       console.log('Updating buffer at ' + duration);
       sourceBuffer.timestampOffset = duration;
       duration = duration + delta;
       sourceBuffer.appendBuffer(arrayBuffer);
-    });    
+    });
   });
 
   loadFn(videoSources.pop(), function(arrayBuffer) {
@@ -208,7 +188,7 @@ function sourceOpen(e) {
 }
 
 function downloadData(url, cb) {
-  console.log("Downloading " + url);  
+  console.log("Downloading " + url);
   var xhr = new XMLHttpRequest;
   xhr.open('get', url);
   xhr.responseType = 'arraybuffer';
@@ -227,6 +207,9 @@ function loadData(file, callback) {
 }
 
 function getRandom(arr, n) {
+  if (arr.length == 0) {
+    throw "Empty array";
+  }
   // https://stackoverflow.com/questions/19269545/how-to-get-n-no-elements-randomly-from-an-array?lq=1
   var result = new Array(n),
       len = arr.length,
@@ -245,10 +228,10 @@ function replicateArray(array, n) {
   return [].concat.apply([], arrays);
 }
 
-function writeLine(text) { 
+function writeLine(text) {
   var $li = $("<li>", {"class": "typewriter"}).html(text);
   $('.shell-body').append($li);
-  
+
   $('.shell-body').trigger('contentChange');
 
 }
@@ -266,13 +249,13 @@ function captureVideo() {
   if (!capturing) {
     capturing = true;
 
-    if (typeof video.captureStream !== "undefined") { 
+    if (typeof video.captureStream !== "undefined") {
       stream = video.captureStream();
       audioStream = audio.captureStream();
 
       stream.addTrack(audioStream.getAudioTracks()[0]);
       stream.removeTrack(stream.getAudioTracks()[0]);
-           
+
       mediaRecorder = new MediaRecorder(stream);
       chunks = [];
       mediaRecorder.ondataavailable = function (e) {
@@ -285,7 +268,7 @@ function captureVideo() {
       $('video').on('ended', function() {mediaRecorder.stop()})
 
       $('#capture-button').text('Stop capturing').toggleClass('btn-primary btn-danger');
-      
+
       mediaRecorder.onstop = function(e) {
         console.log("MediaRecorder.stop() was called.");
         var blob = new Blob(chunks, {'type': 'video/webm'});
@@ -302,7 +285,7 @@ function captureVideo() {
   } else {
     capturing = false;
     mediaRecorder.stop();
-  } 
+  }
 }
 
 
@@ -316,7 +299,7 @@ function play(video) {
 
 function pause(video) {
   var playPromise = video.play();
- 
+
   if (playPromise !== undefined) {
     playPromise.then(_ => {
       video.pause();
@@ -336,9 +319,20 @@ function listDir(path, cb) {
       });
       cb(fileNames);
     }
-  }); 
+  });
 }
 
 function closest(x, array) {
   return array.sort((a, b) => Math.abs(x - a) - Math.abs(x - b))[0]
+}
+
+function hideVideoBox() {
+  $('#video-box').hide();
+  $('#progress-box').show();
+  audio.pause();
+}
+
+function showVideoBox() {
+  $('#video-box').show();
+  $('#progress-box').hide();
 }
