@@ -68,9 +68,10 @@ $('#upload').on('change', function() {
   }
 
   get_bpm(function(bpm, audioDuration) {
-    $('#select-bpm').val(Math.round(bpm));
+    bpm = Math.round(bpm)
+    $('#select-bpm').val(bpm);
+    writeLine('Audio BPM: ' + bpm);
     newAudio = false;
-    // makeVid();
   });
 
 });
@@ -98,8 +99,6 @@ $('#submit').on('click', function() {
 
 function makeVid() {
   bpm = parseFloat($('#select-bpm').val()); // Do use rounded bpm
-
-  writeLine('Audio BPM: ' + roundDec(bpm, 3));
 
   duration = 0;
   var mult = parseFloat($('#select-mult').val())
