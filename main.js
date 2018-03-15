@@ -76,6 +76,8 @@ $('#upload').on('change', function() {
 
 });
 
+window.addEventListener('error', function(event) { writeLine('ERROR: ' + event.message) })
+
 listDir('videos/', function(dirs) {
   $.each(dirs, function(index, value) {
     $('#videos').append($('<option>', {
@@ -84,8 +86,6 @@ listDir('videos/', function(dirs) {
     }));
   });
 });
-
-window.addEventListener('error', function(event) { writeLine('ERROR: ' + event.message) })
 
 
 // Main functions
