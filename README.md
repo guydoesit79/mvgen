@@ -36,7 +36,7 @@ The video is generated dynamically, and as such it is not readily available for 
 
 ## Limitations
 
-- The capturing functionality is not entirely robust and seems to only work in Chrome. The resulting file is a `webm` encoded with `H.264/Opus`. It doesn't always play correctly, so you may want to re-encode it into something more robust. Also, the audio offset will not reflect in the recording, yet.
+- The capturing functionality is not entirely robust and seems to only work in Chrome. The resulting file is a `webm` encoded with `H.264/Opus`. It doesn't always play correctly, so you may want to re-encode it into something more robust.
 
 - The size of the video buffer is limited, therefore only SD videos can be used for the most part. This can theoretically be solved by smart buffering and deleting unneeded parts.
 
